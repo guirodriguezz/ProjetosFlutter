@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SimpleCalculatorTheme{
+class SimpleCalculatorTheme {
   static final ThemeData light = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.red,
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.pink, brightness: Brightness.light),
   );
 
   static final ThemeData dark = ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.pink,
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.pink, brightness: Brightness.dark),
   );
 }

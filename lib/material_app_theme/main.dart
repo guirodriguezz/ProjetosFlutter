@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:calculadora_flutter/material_app_theme/theme.dart';
+import 'package:flutter/material.dart';
+
+const String appName = 'Calculadora simples';
 
 void main() => runApp(const MyApp());
 
@@ -9,7 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Calculadora simples',
+      title: appName,
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       theme: SimpleCalculatorTheme.light,
       darkTheme: SimpleCalculatorTheme.dark,
@@ -25,12 +28,22 @@ class SimpleCalculator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      color: theme.colorScheme.background,
-      alignment: Alignment.center,
-      child: Text(
-        'Calculadora simples',
-        style: theme.textTheme.bodyMedium,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        shadowColor: Colors.black,
+        title: const Text(appName),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Text(
+          appName,
+          style: theme.textTheme.bodyMedium,
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 120,
+        color: Colors.blue,
       ),
     );
   }
