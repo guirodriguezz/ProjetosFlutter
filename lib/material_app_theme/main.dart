@@ -1,3 +1,5 @@
+import 'package:calculadora_flutter/material_app_theme/display.dart';
+import 'package:calculadora_flutter/material_app_theme/number_button.dart';
 import 'package:calculadora_flutter/material_app_theme/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +31,22 @@ class SimpleCalculator extends StatefulWidget {
 }
 
 class _SimpleCalculatorState extends State<SimpleCalculator> {
-  String display = '';
+  String display = '0';
+  String firstNumber = '';
+
+  void insert(String char) {
+    firstNumber += char;
+    setState(() {
+      display = firstNumber;
+    });
+  }
+
+  void clear() {
+    firstNumber = '';
+    setState(() {
+      display = '0';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +62,75 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
           style: TextStyle(color: Colors.white),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(top: 70),
+        child: FloatingActionButton(onPressed: clear, child: const Text('C')),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Expanded(flex: 3, child: Display(display: display)),
           Expanded(
-              flex: 3,
-              child: Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(20),
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(display),
-                    )),
-              )),
-          const Expanded(child: Text('Primeira Linha')),
-          const Expanded(child: Text('Segunda Linha')),
-          const Expanded(child: Text('Terceira Linha')),
-          const Expanded(child: Text('Quarta Linha'))
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NumberButton(
+                  number: '7',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '8',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '9',
+                  onNumberPressed: insert,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NumberButton(
+                  number: '4',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '5',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '6',
+                  onNumberPressed: insert,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NumberButton(
+                  number: '1',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '2',
+                  onNumberPressed: insert,
+                ),
+                NumberButton(
+                  number: '3',
+                  onNumberPressed: insert,
+                ),
+              ],
+            ),
+          ),
+          const Expanded(child: Text('Segundo Linha')),
+          const Expanded(child: Text('Segundo Linha')),
+          const Expanded(child: Text('Segundo Linha')),
         ],
       ),
     );
