@@ -36,10 +36,7 @@ class _DisplayState extends State<Display> {
         debugPrint('Um clique');
         showEasteEgg(1, context);
       },
-      onDoubleTap: ()
-
-
-      {
+      onDoubleTap: () {
         debugPrint('Duplo clique');
         showEasteEgg(2, context);
       },

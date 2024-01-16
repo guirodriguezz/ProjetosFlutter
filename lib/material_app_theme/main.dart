@@ -1,3 +1,4 @@
+import 'package:calculadora_flutter/material_app_theme/OperadorButton.dart';
 import 'package:calculadora_flutter/material_app_theme/display.dart';
 import 'package:calculadora_flutter/material_app_theme/number_button.dart';
 import 'package:calculadora_flutter/material_app_theme/theme.dart';
@@ -31,18 +32,41 @@ class SimpleCalculator extends StatefulWidget {
 }
 
 class _SimpleCalculatorState extends State<SimpleCalculator> {
+  static const operadores = ['x', '-', '+'];
   String display = '0';
   String firstNumber = '';
+  String secondNumber = '';
+  String operador = '';
 
   void insert(String char) {
-    firstNumber += char;
+    if (operadores.contains(char)) {
+      operador = char;
+    } else {
+      if (operador.isEmpty) {
+        firstNumber += char;
+      } else {
+        secondNumber += char;
+      }
+    }
+
     setState(() {
-      display = firstNumber;
+      if (operador.isEmpty) {
+        display = firstNumber;
+      } else {
+        if (secondNumber.isEmpty) {
+          display = '$firstNumber $operador';
+        } else {
+          display = '$firstNumber $operador $secondNumber';
+        }
+      }
     });
   }
 
   void clear() {
     firstNumber = '';
+    operador = '';
+    secondNumber = '';
+
     setState(() {
       display = '0';
     });
@@ -87,6 +111,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '9',
                   onNumberPressed: insert,
                 ),
+                OperadorButton(operador: 'x', onOperadorPressed: insert)
               ],
             ),
           ),
@@ -106,6 +131,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '6',
                   onNumberPressed: insert,
                 ),
+                OperadorButton(operador: '-', onOperadorPressed: insert)
               ],
             ),
           ),
@@ -125,11 +151,10 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '3',
                   onNumberPressed: insert,
                 ),
+                OperadorButton(operador: '+', onOperadorPressed: insert)
               ],
             ),
           ),
-          const Expanded(child: Text('Segundo Linha')),
-          const Expanded(child: Text('Segundo Linha')),
           const Expanded(child: Text('Segundo Linha')),
         ],
       ),
