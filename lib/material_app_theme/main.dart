@@ -39,7 +39,15 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   String operador = '';
 
   void insert(String char) {
+    if (char == '0') {
+      if (operador.isEmpty && firstNumber.isEmpty) return;
+      if (operador.isNotEmpty && secondNumber.isEmpty) return;
+    }
+
     if (operadores.contains(char)) {
+      if (firstNumber.isEmpty) {
+        firstNumber = '0';
+      }
       operador = char;
     } else {
       if (operador.isEmpty) {
@@ -69,6 +77,31 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
 
     setState(() {
       display = '0';
+    });
+  }
+
+  void calculate() {
+    final number1 = int.parse(firstNumber);
+    final number2 = int.parse(secondNumber);
+    int result = 0;
+
+    switch (operador) {
+      case 'x':
+        result = number1 * number2;
+        break;
+      case '-':
+        result = number1 - number2;
+        break;
+      default:
+        result = number1 + number2;
+    }
+
+    firstNumber = result.toString();
+    secondNumber = '';
+    operador = '';
+
+    setState(() {
+      display = result.toString();
     });
   }
 
@@ -155,7 +188,22 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
               ],
             ),
           ),
-          const Expanded(child: Text('Segundo Linha')),
+          Expanded(
+              child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: TextButton(
+                      onPressed: () => insert('0'), child: const Text('0'))),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: OutlinedButton(
+                    onPressed: calculate, child: const Text('=')),
+              ))
+            ],
+          )),
         ],
       ),
     );
