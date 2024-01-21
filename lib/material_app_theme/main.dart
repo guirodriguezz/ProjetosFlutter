@@ -8,24 +8,45 @@ const String appName = 'Calculadora simples';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode currentThemeMode = ThemeMode.dark;
+
+  void toggleThemeMode() {
+    setState(() {
+      currentThemeMode =
+          currentThemeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appName,
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
+      themeMode: currentThemeMode,
       theme: SimpleCalculatorTheme.light,
       darkTheme: SimpleCalculatorTheme.dark,
-      home: const SimpleCalculator(),
+      home: SimpleCalculator(
+        onThemeModePressed: toggleThemeMode,
+      ),
     );
   }
 }
 
 class SimpleCalculator extends StatefulWidget {
-  const SimpleCalculator({super.key});
+  const SimpleCalculator({
+    super.key,
+    required this.onThemeModePressed,
+  });
+
+  final VoidCallback onThemeModePressed;
 
   @override
   State<SimpleCalculator> createState() => _SimpleCalculatorState();
@@ -37,6 +58,9 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   String firstNumber = '';
   String secondNumber = '';
   String operador = '';
+
+  double progress = 0;
+  bool disableOperadorButton = false;
 
   void insert(String char) {
     if (char == '0') {
@@ -60,11 +84,15 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
     setState(() {
       if (operador.isEmpty) {
         display = firstNumber;
+        progress = 0.33;
       } else {
         if (secondNumber.isEmpty) {
           display = '$firstNumber $operador';
+          progress = 0.66;
         } else {
           display = '$firstNumber $operador $secondNumber';
+          progress = 1;
+          disableOperadorButton = true;
         }
       }
     });
@@ -77,6 +105,8 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
 
     setState(() {
       display = '0';
+      progress = 0;
+      disableOperadorButton = false;
     });
   }
 
@@ -102,6 +132,8 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
 
     setState(() {
       display = result.toString();
+      progress = 0.33;
+      disableOperadorButton = false;
     });
   }
 
@@ -111,23 +143,50 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: theme.colorScheme.inversePrimary,
         elevation: 5,
         shadowColor: Colors.black,
         title: const Text(
           appName,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
+        actions: [
+          IconButton(
+            onPressed: widget.onThemeModePressed,
+            icon: Icon(
+              theme.brightness == Brightness.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(top: 70),
-        child: FloatingActionButton(onPressed: clear, child: const Text('C')),
+        child: FloatingActionButton(
+          onPressed: clear,
+          child: const Text('C'),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(flex: 3, child: Display(display: display)),
+          Expanded(
+            flex: 3,
+            child: Display(display: display),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
+            child: Center(
+              child: LinearProgressIndicator(
+                backgroundColor: theme.scaffoldBackgroundColor,
+                value: progress,
+              ),
+            ),
+          ),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -144,7 +203,11 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '9',
                   onNumberPressed: insert,
                 ),
-                OperadorButton(operador: 'x', onOperadorPressed: insert)
+                OperadorButton(
+                  operador: 'x',
+                  onOperadorPressed: insert,
+                  disabled: disableOperadorButton,
+                ),
               ],
             ),
           ),
@@ -164,7 +227,11 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '6',
                   onNumberPressed: insert,
                 ),
-                OperadorButton(operador: '-', onOperadorPressed: insert)
+                OperadorButton(
+                  operador: '-',
+                  onOperadorPressed: insert,
+                  disabled: disableOperadorButton,
+                ),
               ],
             ),
           ),
@@ -184,26 +251,40 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   number: '3',
                   onNumberPressed: insert,
                 ),
-                OperadorButton(operador: '+', onOperadorPressed: insert)
+                OperadorButton(
+                  operador: '+',
+                  onOperadorPressed: insert,
+                  disabled: disableOperadorButton,
+                ),
               ],
             ),
           ),
           Expanded(
-              child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
                   flex: 3,
                   child: TextButton(
-                      onPressed: () => insert('0'), child: const Text('0'))),
-              Expanded(
+                    onPressed: () => insert('0'),
+                    child: const Text('0'),
+                  ),
+                ),
+                Expanded(
                   child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: OutlinedButton(
-                    onPressed: calculate, child: const Text('=')),
-              ))
-            ],
-          )),
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(),
+                      ),
+                      onPressed: calculate,
+                      child: const Text('='),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

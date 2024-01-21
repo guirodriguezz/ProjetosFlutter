@@ -45,11 +45,12 @@ class _DisplayState extends State<Display> {
         elevation: 5,
         margin: const EdgeInsets.all(20),
         child: Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Text(widget.display),
-            )),
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Text(widget.display),
+          ),
+        ),
       ),
     );
   }
