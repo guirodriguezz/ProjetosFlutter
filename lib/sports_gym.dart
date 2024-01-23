@@ -46,8 +46,21 @@ class _SportsGymState extends State<SportsGym> {
       body: Center(
         child: Text('Current Index: $currentIndex'),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        onPressed: () {},
+        child: const Icon(Icons.share),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 10,
+        notchMargin: 7,
+        shape: const CircularNotchedRectangle(),
+        child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconSize: 22,
           showUnselectedLabels: false,
           currentIndex: currentIndex,
           onTap: onItemPressed,
@@ -68,7 +81,9 @@ class _SportsGymState extends State<SportsGym> {
               icon: Icon(Icons.person),
               label: Strings.profile,
             ),
-          ]),
+          ],
+        ),
+      ),
     );
   }
 }

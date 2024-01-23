@@ -13,7 +13,7 @@ class SportsGymApp extends StatefulWidget {
 }
 
 class _SportsGymAppState extends State<SportsGymApp> {
-  ThemeMode currentThemeMode = ThemeMode.dark;
+  ThemeMode currentThemeMode = ThemeMode.light;
 
   void toggleThemeMode() {
     setState(() {
