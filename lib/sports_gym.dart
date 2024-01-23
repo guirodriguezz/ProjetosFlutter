@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ginasio_esportes_flutter/pages/calendar_page.dart';
+import 'package:ginasio_esportes_flutter/pages/profile_page.dart';
+import 'package:ginasio_esportes_flutter/pages/ranking_page.dart';
+import 'package:ginasio_esportes_flutter/pages/sports_page.dart';
 import 'package:ginasio_esportes_flutter/resources/strings.dart';
 
 class SportsGym extends StatefulWidget {
@@ -14,11 +18,19 @@ class SportsGym extends StatefulWidget {
 }
 
 class _SportsGymState extends State<SportsGym> {
-  int currentIndex = 0;
+  final pageController = PageController();
+  int currentPage = 0;
 
-  void onItemPressed(int index) {
+  void onItemPressed(int page) {
+    pageController.jumpToPage(page);
     setState(() {
-      currentIndex = index;
+      currentPage = page;
+    });
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      currentPage = page;
     });
   }
 
@@ -43,8 +55,15 @@ class _SportsGymState extends State<SportsGym> {
           ),
         ],
       ),
-      body: Center(
-        child: Text('Current Index: $currentIndex'),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        children: const [
+          SportsPage(),
+          RankingPage(),
+          CalendarPage(),
+          ProfilePage(),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -62,7 +81,7 @@ class _SportsGymState extends State<SportsGym> {
           elevation: 0,
           iconSize: 22,
           showUnselectedLabels: false,
-          currentIndex: currentIndex,
+          currentIndex: currentPage,
           onTap: onItemPressed,
           items: const [
             BottomNavigationBarItem(
@@ -85,5 +104,11 @@ class _SportsGymState extends State<SportsGym> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
   }
 }
