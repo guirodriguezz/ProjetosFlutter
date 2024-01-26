@@ -4,4 +4,7 @@ class Strings {
   static const ranking = 'Classificação';
   static const calendar = 'Calendário';
   static const profile = 'Perfil';
+  static const baseball = 'Baseball';
+  static const soccer = 'Futebol';
+  static const football = 'Futebol Americano';
 }

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:ginasio_esportes_flutter/resources/strings.dart';
+import 'package:ginasio_esportes_flutter/tabs/sport_tab.dart';
+import '../models/sport.dart';
 
-class SportsPage extends StatefulWidget {
-  const SportsPage({super.key});
+class SportsPage extends StatelessWidget {
+  const SportsPage({
+    super.key,
+    required this.tabsSportsList,
+  });
 
-  @override
-  State<SportsPage> createState() => _SportsPageState();
-}
+  final List<Sport> tabsSportsList;
 
-class _SportsPageState extends State<SportsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        Strings.sports,
-      ),
+    return TabBarView(
+      children: [
+        for (final sport in tabsSportsList) SportTab(sport: sport),
+      ],
     );
   }
 }

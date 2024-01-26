@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ginasio_esportes_flutter/models/sport.dart';
 import 'package:ginasio_esportes_flutter/resources/custom_icons.dart';
 import 'package:ginasio_esportes_flutter/pages/calendar_page.dart';
 import 'package:ginasio_esportes_flutter/pages/profile_page.dart';
@@ -21,10 +22,11 @@ class SportsGym extends StatefulWidget {
 class _SportsGymState extends State<SportsGym> {
   final pageController = PageController();
   int currentPage = 0;
-  final tabs = const [
-    Tab(icon: Icon(CustomIcons.baseball_ball)),
-    Tab(icon: Icon(CustomIcons.football)),
-    Tab(icon: Icon(CustomIcons.american_football)),
+
+  final tabBarSports = [
+    Sport(name: Strings.baseball, icon: CustomIcons.baseball_ball),
+    Sport(name: Strings.soccer, icon: CustomIcons.football),
+    Sport(name: Strings.football, icon: CustomIcons.american_football),
   ];
 
   void onItemPressed(int page) {
@@ -45,7 +47,7 @@ class _SportsGymState extends State<SportsGym> {
     final theme = Theme.of(context);
 
     return DefaultTabController(
-      length: tabs.length,
+      length: tabBarSports.length,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: theme.colorScheme.inversePrimary,
@@ -64,7 +66,9 @@ class _SportsGymState extends State<SportsGym> {
           ],
           bottom: currentPage == 0
               ? TabBar(
-                  tabs: tabs,
+                  tabs: tabBarSports
+                      .map((sport) => Tab(icon: Icon(sport.icon)))
+                      .toList(),
                   indicatorPadding: const EdgeInsets.symmetric(horizontal: -30),
                 )
               : null,
@@ -72,11 +76,11 @@ class _SportsGymState extends State<SportsGym> {
         body: PageView(
           controller: pageController,
           onPageChanged: onPageChanged,
-          children: const [
-            SportsPage(),
-            RankingPage(),
-            CalendarPage(),
-            ProfilePage(),
+          children: [
+            SportsPage(tabsSportsList: tabBarSports),
+            const RankingPage(),
+            const CalendarPage(),
+            const ProfilePage(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
