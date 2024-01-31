@@ -5,6 +5,7 @@ import 'package:ginasio_esportes_flutter/pages/calendar_page.dart';
 import 'package:ginasio_esportes_flutter/pages/profile_page.dart';
 import 'package:ginasio_esportes_flutter/pages/ranking_page.dart';
 import 'package:ginasio_esportes_flutter/pages/sports_page.dart';
+import 'package:ginasio_esportes_flutter/resources/images.dart';
 import 'package:ginasio_esportes_flutter/resources/strings.dart';
 
 class SportsGym extends StatefulWidget {
@@ -24,9 +25,21 @@ class _SportsGymState extends State<SportsGym> {
   int currentPage = 0;
 
   final tabBarSports = [
-    Sport(name: Strings.baseball, icon: CustomIcons.baseball_ball),
-    Sport(name: Strings.soccer, icon: CustomIcons.football),
-    Sport(name: Strings.football, icon: CustomIcons.american_football),
+    Sport(
+      name: Strings.baseball,
+      icon: CustomIcons.baseball_ball,
+      cover: Images.baseball,
+    ),
+    Sport(
+      name: Strings.soccer,
+      icon: CustomIcons.football,
+      cover: Images.soccer,
+    ),
+    Sport(
+      name: Strings.baskteball,
+      icon: CustomIcons.basketball_ball,
+      cover: Images.baskteball,
+    ),
   ];
 
   void onItemPressed(int page) {
@@ -74,6 +87,7 @@ class _SportsGymState extends State<SportsGym> {
               : null,
         ),
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           onPageChanged: onPageChanged,
           children: [
@@ -84,8 +98,9 @@ class _SportsGymState extends State<SportsGym> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
           onPressed: () {},
           child: const Icon(Icons.share),
         ),

@@ -7,4 +7,7 @@ class Strings {
   static const baseball = 'Baseball';
   static const soccer = 'Futebol';
   static const football = 'Futebol Americano';
+  static const baskteball = 'Basquete';
+  static const news = 'Noticias';
+  static const videos = 'Videos';
 }
