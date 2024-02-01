@@ -4,7 +4,7 @@ class SportsGymTheme {
   static final ThemeData light = ThemeData(
     scaffoldBackgroundColor: Colors.grey[200],
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.green,
+      seedColor: Colors.greenAccent,
       brightness: Brightness.light,
     ),
     textTheme: _textTheme,
@@ -12,7 +12,7 @@ class SportsGymTheme {
 
   static final ThemeData dark = ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.green,
+      seedColor: Colors.greenAccent,
       brightness: Brightness.dark,
     ),
     textTheme: _textTheme,
